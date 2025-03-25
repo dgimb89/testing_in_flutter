@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:testing_in_flutter/common/widgets/start_new_game_button.dart';
 import 'package:testing_in_flutter/common/widgets/title_bar.dart';
 
 class StartGameScreen extends StatelessWidget {
@@ -28,19 +29,7 @@ class StartGameScreen extends StatelessWidget {
                 color: Theme.of(context).primaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: ElevatedButton(
-                onPressed: () => context.replace('/game'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 16,
-                  ),
-                ),
-                child: const Text(
-                  'Start Game',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
+              child: StartNewGameButton(),
             ),
           ],
         ),

@@ -137,18 +137,21 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   }
 
   Widget _buildCatchButton(GameScreenViewModel viewModel) {
-    return SizedBox(
-      width: GameScreen.buttonSize,
-      height: GameScreen.buttonSize,
-      child: ElevatedButton(
-        onPressed: viewModel.signalCatch,
-        style: ElevatedButton.styleFrom(
-          shape: const CircleBorder(),
-          padding: const EdgeInsets.all(16),
-        ),
-        child: Text(
-          viewModel.getRemainingSeconds().toStringAsFixed(2),
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return Semantics(
+      label: 'catch_button',
+      child: SizedBox(
+        width: GameScreen.buttonSize,
+        height: GameScreen.buttonSize,
+        child: ElevatedButton(
+          onPressed: viewModel.signalCatch,
+          style: ElevatedButton.styleFrom(
+            shape: const CircleBorder(),
+            padding: const EdgeInsets.all(16),
+          ),
+          child: Text(
+            viewModel.getRemainingSeconds().toStringAsFixed(2),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );

@@ -7,8 +7,14 @@ class StartNewGameButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      child: const Text('Start new game'),
       onPressed: () => context.replace('/game'),
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+      ),
+      child: const Text(
+        'Start Game',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
