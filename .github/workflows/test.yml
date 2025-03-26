@@ -33,9 +33,34 @@ jobs:
       - name: Run widget tests with coverage
         run: flutter test --coverage --reporter=github
 
-      # Requires emulator to be running, skip for now
-      # - name: Run integration tests
-      #   run: flutter test integration_test --coverage --merge-coverage --reporter=github
+      - name: Install Android SDK dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip openjdk-24
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
+          mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+          echo "export ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_ENV
+
+      - name: Accept Android licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install Android SDK components
+        run: |
+          sdkmanager "platform-tools" "platforms;android-33" "system-images;android-33;google_apis;x86_64"
+          sdkmanager --update
+
+      - name: Create and launch emulator
+        run: |
+          echo "no" | avdmanager create avd -n test -k "system-images;android-33;google_apis;x86_64"
+          flutter emulators --create --name test
+          flutter emulators --launch test
+
+      # Requires emulator to be running
+      - name: Run integration tests
+        run: flutter test integration_test --coverage --merge-coverage --reporter=github
         
       - name: Generate code coverage report
         run: genhtml coverage/lcov.info -o coverage/html
