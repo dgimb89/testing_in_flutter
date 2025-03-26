@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install lcov
+        run: sudo apt-get install lcov
+
       - name: Get Flutter version
         id: flutter_version
         run: echo "FLUTTER_VERSION=$(grep '^flutter' .tool-versions | cut -d' ' -f2)" >> $GITHUB_ENV
@@ -28,12 +31,14 @@ jobs:
         run: flutter pub get
 
       - name: Run widget tests with coverage
-        run: |
-          flutter test --coverage --test-reporter=github
-          genhtml coverage/lcov.info -o coverage/html
+        run: flutter test --coverage --reporter=github
 
-      - name: Run integration tests
-        run: flutter test integration_test --test-reporter=github
+      # Requires emulator to be running, skip for now
+      # - name: Run integration tests
+      #   run: flutter test integration_test --coverage --merge-coverage --reporter=github
+        
+      - name: Generate code coverage report
+        run: genhtml coverage/lcov.info -o coverage/html
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
