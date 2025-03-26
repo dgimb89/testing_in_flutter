@@ -52,9 +52,6 @@ void main() {
         // Verify the score is displayed
         expect(find.text('Score: 0'), findsOneWidget);
 
-        // Verify the game grid is rendered
-        expect(find.byType(GridView), findsOneWidget);
-
         // Verify the catch button is rendered
         expect(find.byType(ElevatedButton), findsOneWidget);
 

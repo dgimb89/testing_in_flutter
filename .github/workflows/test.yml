@@ -1,0 +1,42 @@
+name: Flutter Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get Flutter version
+        id: flutter_version
+        run: echo "FLUTTER_VERSION=$(grep '^flutter' .tool-versions | cut -d' ' -f2)" >> $GITHUB_ENV
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run widget tests with coverage
+        run: |
+          flutter test --coverage --test-reporter=github
+          genhtml coverage/lcov.info -o coverage/html
+
+      - name: Run integration tests
+        run: flutter test integration_test --test-reporter=github
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/html 
