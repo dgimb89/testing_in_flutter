@@ -78,19 +78,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               builder: (context, constraints) {
                 return Stack(
                   children: [
-                    GridView.count(
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 10,
-                      children: List.generate(100, (index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey.withOpacity(0.2),
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
                     // Overlay text
                     if (gameState.pacing != null &&
                         gameState.previousX != null &&
